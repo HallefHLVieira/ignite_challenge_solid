@@ -1,0 +1,193 @@
+{
+    "openapi":"3.0.0",
+    "info":{
+        "title":"Challenge Documentation",
+        "description":"This is a doc to my routes",
+        "termsOfService": "http://localhost:3333/users",
+        "version":"1.0.0",
+        "contact":{
+            "email":"hallef.vieira.dev@gmail.com"
+        }
+    },
+    "paths":{
+        "/users":{
+            "post":{
+                "tags":["Users"],
+                "summary":"Create a user",
+                "description":"Create a new category",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "name":{
+                                        "type":"string"
+                                    },
+                                    "email":{
+                                        "type":"string"
+                                    }
+                                },
+                                "example":{
+                                    "name":"Hallef",
+                                    "email":"kkkoioi@oi.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"created",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "id":{
+                                            "type":"string"
+                                        },
+                                        "name":{
+                                            "type":"string"
+                                        },
+                                        "email":{
+                                            "type":"string"
+                                        },
+                                        "admin":{
+                                            "type":"boolean"
+                                        },
+                                        "updated_at":{
+                                            "type":"string"
+                                        },
+                                        "created_at":{
+                                            "type":"string"
+                                        }
+                                    },
+                                    "example":{
+                                        "id": "4747ecdd-7535-436b-a5db-a39285af3b21",
+                                        "name": "Hallef",
+                                        "email": "oioi@oi.com",
+                                        "admin": false,
+                                        "created_at": "2022-01-16T02:36:29.792Z",
+                                        "updated_at": "2022-01-16T02:36:58.388Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"User already exists!",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string"
+                                        }
+                                    },
+                                    "example":{
+                                        "error": "User already exists!"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "tags":["Users"],
+                "summary":"Get all users",
+                "description":"Get all users on database",
+                "parameters": [{
+                    "in": "header",
+                    "name":"user_id",
+                    "description": "Id by admin user",
+                    "schema":{
+                        "type": "string"
+                    },
+                    "required": true
+                }],
+                "responses":{
+                    "201":{
+                        "description":"created",
+                        "content":{
+                            "application/json":{
+                                "schema":
+                                    {
+                                    "type":"object",
+                                    "properties":{
+                                        "id":{
+                                            "type":"string"
+                                        },
+                                        "name":{
+                                            "type":"string"
+                                        },
+                                        "email":{
+                                            "type":"string"
+                                        },
+                                        "admin":{
+                                            "type":"boolean"
+                                        },
+                                        "updated_at":{
+                                            "type":"string"
+                                        },
+                                        "created_at":{
+                                            "type":"string"
+                                        }
+                                    },
+                                    "example":{
+                                        "id": "4747ecdd-7535-436b-a5db-a39285af3b21",
+                                        "name": "Hallef",
+                                        "email": "oioi@oi.com",
+                                        "admin": false,
+                                        "created_at": "2022-01-16T02:36:29.792Z",
+                                        "updated_at": "2022-01-16T02:36:58.388Z"
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}":{
+            "get":{
+                "tags":["User"],
+                "summary":"Get user by id",
+                "description":"Get a user by id on database",
+                "parameters": [{
+                    "in": "header",
+                    "name":"user_id",
+                    "description": "User type",
+                    "schema":{
+                        "type": "text"
+                    },
+                    "required": true
+                }],
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "name":{
+                                        "type":"string"
+                                    },
+                                    "email":{
+                                        "type":"string"
+                                    }
+                                },
+                                "example":{
+                                    "name":"Hallef",
+                                    "email":"kkkoioi@oi.com"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
