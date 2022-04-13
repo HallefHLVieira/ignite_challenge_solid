@@ -10,7 +10,7 @@ class ListAllUsersUseCase {
 
   execute({ user_id }: IRequest): User[] {
     const user = this.usersRepository.findById(user_id);
-    if (user.admin) {
+    if (user && user.admin) {
       return this.usersRepository.list();
     }
     throw new Error("Permission denied");

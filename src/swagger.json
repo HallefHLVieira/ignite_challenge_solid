@@ -2,7 +2,7 @@
     "openapi":"3.0.0",
     "info":{
         "title":"Challenge Documentation",
-        "description":"This is a doc to my routes",
+        "description":"This is a doc to my API",
         "termsOfService": "http://localhost:3333/users",
         "version":"1.0.0",
         "contact":{
@@ -13,8 +13,8 @@
         "/users":{
             "post":{
                 "tags":["Users"],
-                "summary":"Create a user",
-                "description":"Create a new category",
+                "summary":"Criar um novo usuário",
+                "description":"Campos obrigatórios para criação de um usuário.",
                 "requestBody":{
                     "content":{
                         "application/json":{
@@ -29,20 +29,97 @@
                                     }
                                 },
                                 "example":{
-                                    "name":"Hallef",
-                                    "email":"kkkoioi@oi.com"
+                                    "name":"nome sobrenome",
+                                    "email":"nome.sobrenome@dominio.com"
                                 }
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses":{
                     "201":{
-                        "description":"created",
+                        "description":"Operação realizada com sucesso.",
                         "content":{
                             "application/json":{
                                 "schema":{
                                     "type":"object",
+                                    "properties":{
+                                        "admin":{
+                                            "type":"boolean"
+                                        },
+                                        "id":{
+                                            "type":"string"
+                                        },
+                                        "name":{
+                                            "type":"string"
+                                        },
+                                        "email":{
+                                            "type":"string"
+                                        },
+                                        "updated_at":{
+                                            "type":"string"
+                                        },
+                                        "created_at":{
+                                            "type":"string"
+                                        }
+                                    },
+                                    "example":{
+                                        "admin": false,
+                                        "id": "4747ecdd-7535-436b-a5db-a39285af3b21",
+                                        "name": "nome sobrenome",
+                                        "email": "nome.sobrenome@dominio.com",
+                                        "created_at": "2022-01-16T02:36:29.792Z",
+                                        "updated_at": "2022-01-16T02:36:58.388Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"Email já está sendo utilizado.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string"
+                                        }
+                                    },
+                                    "example":{
+                                        "error": "This email is already in use."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "tags":["Users"],
+                "summary":"Retorna todos os usuários.",
+                "description":"Somente usuário admin pode acessar.",
+                "parameters": [{
+                    "in": "header",
+                    "name":"user_id",
+                    "description": "Id by a admin user",
+                    "schema":{
+                        "type": "string"
+                    },
+                    "required": true
+                }],
+                "responses":{
+                    "200":{
+                        "description":"Operação realizada com sucesso.",
+                        "content":{
+                            "application/json":{
+                                "schema":
+                                    {
+                                    "type":"array",
+                                    "items":{
+                                        "type":"object"
+                                    },
                                     "properties":{
                                         "id":{
                                             "type":"string"
@@ -62,21 +139,23 @@
                                         "created_at":{
                                             "type":"string"
                                         }
-                                    },
-                                    "example":{
+                                    }
+                                },
+                                "example":[
+                                    {
                                         "id": "4747ecdd-7535-436b-a5db-a39285af3b21",
-                                        "name": "Hallef",
-                                        "email": "oioi@oi.com",
+                                        "name": "nome sobrenome",
+                                        "email": "nome.sobrenome@dominio.com.br",
                                         "admin": false,
                                         "created_at": "2022-01-16T02:36:29.792Z",
                                         "updated_at": "2022-01-16T02:36:58.388Z"
                                     }
-                                }
+                                ]
                             }
                         }
                     },
                     "400":{
-                        "description":"User already exists!",
+                        "description":"Usuário sem permissão ou Usuário não encontrado.",
                         "content":{
                             "application/json":{
                                 "schema":{
@@ -87,30 +166,31 @@
                                         }
                                     },
                                     "example":{
-                                        "error": "User already exists!"
+                                        "error": "You need to be an administrator to list all users."
                                     }
                                 }
                             }
                         }
                     }
                 }
-            },
+            }
+        },
+        "/users/{user_id}":{
             "get":{
                 "tags":["Users"],
-                "summary":"Get all users",
-                "description":"Get all users on database",
+                "summary":"Retorna um usuário específico.",
                 "parameters": [{
-                    "in": "header",
+                    "in": "path",
                     "name":"user_id",
-                    "description": "Id by admin user",
+                    "description": "Id do usuário",
                     "schema":{
                         "type": "string"
                     },
                     "required": true
                 }],
                 "responses":{
-                    "201":{
-                        "description":"created",
+                    "200":{
+                        "description":"Operação realizada com sucesso",
                         "content":{
                             "application/json":{
                                 "schema":
@@ -138,8 +218,8 @@
                                     },
                                     "example":{
                                         "id": "4747ecdd-7535-436b-a5db-a39285af3b21",
-                                        "name": "Hallef",
-                                        "email": "oioi@oi.com",
+                                        "name": "nome sobrenome",
+                                        "email": "nome.sobrenome@dominio.com.br",
                                         "admin": false,
                                         "created_at": "2022-01-16T02:36:29.792Z",
                                         "updated_at": "2022-01-16T02:36:58.388Z"
@@ -148,40 +228,96 @@
                                 
                             }
                         }
+                    },
+                    "404":{
+                        "description":"Usuário não encontrado.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string"
+                                        }
+                                    },
+                                    "example":{
+                                        "error": "User not found."
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
-        "/users/{user_id}":{
-            "get":{
-                "tags":["User"],
-                "summary":"Get user by id",
-                "description":"Get a user by id on database",
+        "/users/{user_id}/admin":{
+            "patch":{
+                "tags":["Users"],
+                "summary":"Torna admin um usuário.",
                 "parameters": [{
-                    "in": "header",
+                    "in": "path",
                     "name":"user_id",
-                    "description": "User type",
+                    "description": "Id do usuário",
                     "schema":{
-                        "type": "text"
+                        "type": "string"
                     },
                     "required": true
                 }],
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "name":{
-                                        "type":"string"
+                "responses":{
+                    "200":{
+                        "description":"Operação realizada com sucesso.",
+                        "content":{
+                            "application/json":{
+                                "schema":
+                                    {
+                                    "type":"object",
+                                    "properties":{
+                                        "admin":{
+                                            "type":"boolean"
+                                        },
+                                        "id":{
+                                            "type":"string"
+                                        },
+                                        "name":{
+                                            "type":"string"
+                                        },
+                                        "email":{
+                                            "type":"string"
+                                        },
+                                        "updated_at":{
+                                            "type":"string"
+                                        },
+                                        "created_at":{
+                                            "type":"string"
+                                        }
                                     },
-                                    "email":{
-                                        "type":"string"
+                                    "example":{
+                                        "admin": true,
+                                        "id": "4747ecdd-7535-436b-a5db-a39285af3b21",
+                                        "name": "nome sobrenome",
+                                        "email": "nome.sobrenome@dominio.com.br",
+                                        "created_at": "2022-01-16T02:36:29.792Z",
+                                        "updated_at": "2022-01-16T02:36:58.388Z"
                                     }
-                                },
-                                "example":{
-                                    "name":"Hallef",
-                                    "email":"kkkoioi@oi.com"
+                                }
+                                
+                            }
+                        }
+                    },
+                    "404":{
+                        "description":"Usuário não encontrado.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string"
+                                        }
+                                    },
+                                    "example":{
+                                        "error": "User not found."
+                                    }
                                 }
                             }
                         }
